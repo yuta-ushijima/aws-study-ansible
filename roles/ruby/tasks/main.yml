@@ -1,0 +1,68 @@
+- name: install by Git
+  yum:
+    name:
+      - git
+  sudo: true
+  tags:
+    - ruby
+    - ruby:install
+    - install
+
+- name: git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
+  command: git clone https://github.com/sstephenson/rbenv.git ~/.rbenv creates=~/.rbenv
+  tags:
+    - ruby
+    - rbenv
+
+- name: add rbenv initialization to profile
+  template: src=rbenv.sh.j2 dest=/etc/profile.d/rbenv.sh owner=root group=root mode=0755
+  sudo: true
+  tags:
+    - ruby
+    - rbenv
+
+- name: git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
+  command: git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build creates=~/.rbenv/plugins/ruby-build/
+  tags:
+    - ruby
+    - ruby-build
+
+- name: install build depends by Ruby
+  yum: name={{ item }} state=present
+  with_items:
+    - gcc
+    - openssl-devel
+    - libyaml-devel
+    - readline-devel
+    - zlib-devel
+    - git
+  sudo: true
+  tags:
+    - ruby
+    - ruby:install
+    - install
+
+- name: check ruby rbenv installed
+  shell: cd; bash -lc "rbenv versions | grep {{ ruby_version }} | tr '*' ' ' | sed -e 's/\s\+//' | cut -f1 -d' '"
+  register: ruby_installed
+  ignore_errors: yes
+  tags:
+    - ruby
+    - ruby:install
+    - install
+
+- name: rbenv install {{ ruby_version }}
+  command: rbenv install {{ ruby_version }}
+  when: ruby_installed.stdout != ruby_version
+  tags:
+    - ruby
+    - ruby:install
+    - install
+ 
+- name: rbenv global {{ ruby_version }}
+  command: rbenv global  {{ ruby_version }}
+  when: ruby_installed.stdout != ruby_version
+  tags:
+    - ruby
+    - ruby:install
+    - install

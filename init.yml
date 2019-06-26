@@ -1,0 +1,8 @@
+- hosts: all
+  roles:
+    - ruby
+    - mysql
+    - rails
+  vars:
+    ruby_version: 2.4.0
+    rails_version: 5.0.0
