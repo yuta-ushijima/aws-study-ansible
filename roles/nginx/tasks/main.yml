@@ -30,6 +30,7 @@
     - nginx
 
 - name: Restart nginx
-  shell: service nginx restart
+  shell: systemctl start nginx
+  become: yes
   tags:
     - nginx
