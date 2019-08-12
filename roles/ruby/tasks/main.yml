@@ -2,7 +2,7 @@
   yum:
     name:
       - git
-  sudo: true
+  become: yes
   tags:
     - ruby
     - ruby:install
@@ -16,7 +16,7 @@
 
 - name: add rbenv initialization to profile
   template: src=rbenv.sh.j2 dest=/etc/profile.d/rbenv.sh owner=root group=root mode=0755
-  sudo: true
+  become: yes
   tags:
     - ruby
     - rbenv
@@ -30,13 +30,20 @@
 - name: install build depends by Ruby
   yum: name={{ item }} state=present
   with_items:
+    - git-core
     - gcc
-    - openssl-devel
+    - gcc-c++
+    - gdbm-devel
+    - libffi-devel
+    - libselinux-python
     - libyaml-devel
+    - mysql-devel
+    - ncurses-devel
+    - openssl-devel
+    - sqlite-devel
     - readline-devel
     - zlib-devel
-    - git
-  sudo: true
+  become: yes
   tags:
     - ruby
     - ruby:install
@@ -66,3 +73,9 @@
     - ruby
     - ruby:install
     - install
+
+- name: Install bundler
+  shell: bash -lc "gem install {{ item }}"
+  with_items:
+    - rbenv-rehash
+    - bundler -v {{ bundler_version }}
