@@ -1,4 +1,6 @@
 - name: git clone https://github.com/koujienami/{{ application_name }}.git
-  command: git clone https://github.com/koujienami/{{ application_name }}.git creates=/var/www/
+  git:
+    - repo: https://github.com/koujienami/{{ application_name }}.git
+    - dest: /var/www/
   tags:
     - application

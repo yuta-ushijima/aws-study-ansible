@@ -1,5 +1,7 @@
 - name: git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
-  command: git clone https://github.com/sstephenson/rbenv.git ~/.rbenv creates=~/.rbenv
+  git:
+    - repo: https://github.com/sstephenson/rbenv.git
+    - dest: ~/.rbenv
   tags:
     - ruby
     - rbenv
@@ -12,7 +14,9 @@
     - rbenv
 
 - name: git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
-  command: git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build creates=~/.rbenv/plugins/ruby-build/
+  git:
+    - repo: https://github.com/sstephenson/ruby-build.git
+    - dest: ~/.rbenv/plugins/ruby-build
   tags:
     - ruby
     - ruby-build
