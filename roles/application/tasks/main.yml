@@ -1,6 +1,6 @@
 - name: git clone https://github.com/koujienami/{{ application_name }}.git
   git:
     repo: https://github.com/koujienami/{{ application_name }}.git
-    dest: /var/www/TimeLine/
+    dest: /home/ec2-user/TimeLine/
   tags:
     - application
